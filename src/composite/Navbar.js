@@ -1,8 +1,18 @@
 import { Link } from 'react-router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../store/StoreSlice';
+import { showError, showInfo } from "../composite/MessageBanner";
+import { useNavigate } from "react-router-dom";
+import { ApiLogout } from '../api/ApiUser';
+import MessageBanner from "../composite/MessageBanner";
 
 function Navbar() {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [messages, setMessages] = useState([]);
+    const [apiInProgress, setApiInProgress] = useState(false);
     const [navLinksActive, setNavLinksActive] = useState(false);
     const user = useSelector((state) => state.settings.user);
 
@@ -13,7 +23,27 @@ function Navbar() {
         setNavLinksActive(!navLinksActive);
     }
 
+    let onLogout = async (event) => {
+        event.preventDefault();
+
+        setApiInProgress(true);
+        try {
+            await ApiLogout(user.token, (success, error) => {
+                if (success) {
+                    dispatch(setUser({}));
+                    showInfo(messages, setMessages, 'Вы вышли!');
+                    navigate("/");
+                } else {
+                    showError(messages, setMessages, error);
+                }
+            });
+        } finally {
+            setApiInProgress(false);
+        }
+    };
+
     return (
+        <>
         <nav className="navbar is-primary" role="navigation" aria-label="main navigation">
             <div className="navbar-brand">
                 <Link className="navbar-item is-size-3 has-text-weight-extrabold is-family-code mx-1" to="/">TODO</Link>
@@ -31,17 +61,18 @@ function Navbar() {
                 <div className="navbar-end">
                     <div className="buttons">
                         {isLoggedIn ? (
-                            <div className="navbar-item"><Link className="button is-warning is-light is-rounded" to='/logout'>{'Выйти ' + user.name}</Link></div>
+                            <div className="navbar-item"><Link className="button is-warning is-light is-rounded" to='/logout' onClick={onLogout} disabled={apiInProgress}>{'Выйти ' + user.name}</Link></div>
                         ) : (<>
                             <div className="navbar-item px-0"><Link className="button is-warning is-soft is-rounded" to='/createUser'>Создать пользователя</Link></div>
                             <div className="navbar-item pl-0"><Link className="button is-light is-rounded" to='/login'>Войти</Link></div>
-                            </>
+                        </>
                         )}
                     </div>
                 </div>
             </div>
-
         </nav>
+        <MessageBanner messages={messages} setMessages={setMessages} />
+        </>
     );
 }
 

@@ -1,3 +1,6 @@
+import { getHostUrl } from "./ApiCommon";
+import { processResponse } from "./ApiCommon";
+
 export async function ApiCreateUser(userName, password, callback) {
     let data = {
         "username": userName,
@@ -13,11 +16,11 @@ export async function ApiCreateUser(userName, password, callback) {
             body: JSON.stringify(data),
         });
 
-        await processResponse(response, (success, responseData) => {
+        await processResponse(response, (success, responseData, validateErrors) => {
             if (success) {
                 callback(true, { id: responseData.id, name: data.userName });
             } else {
-                callback(false, responseData);
+                callback(false, responseData, validateErrors);
             }
         });
     } catch (error) {
@@ -40,11 +43,11 @@ export async function ApiLogin(userName, password, callback) {
             body: JSON.stringify(data),
         });
 
-        await processResponse(response, (success, responseData) => {
+        await processResponse(response, (success, responseData, validateErrors) => {
             if (success) {
                 callback(true, { id: responseData.id, name: responseData.username, token: responseData.token });
             } else {
-                callback(false, responseData);
+                callback(false, responseData, validateErrors);
             }
         });
     } catch (error) {
@@ -52,45 +55,25 @@ export async function ApiLogin(userName, password, callback) {
     }
 }
 
-async function processResponse(response, callback) {
-    if (response.ok) {
-        const responseData = await response.json();
-        callback(true, responseData);
-    } else {
-        switch (response.status) {
-            case 401: {
-                const responseData = await response.json();
-                callback(false, responseData.error)
-                break;
-            }
-            case 422: {
-                const responseData = await response.json();
+export async function ApiLogout(token, callback) {
+    try {
+        const response = await fetch(getHostUrl() + '/users/logout', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+        });
 
-                let errorsMap = new Map();
-                responseData.error.split('\n').forEach((field_error, index) => {
-                    let sepIndex = field_error.indexOf(':');
-                    if (sepIndex >= 0) {
-                        errorsMap.set(
-                            field_error.substring(0, sepIndex),
-                            field_error.substring(sepIndex + 1),
-                        );
-                    }
-                });
-
-                callback(false, responseData.error);
-                break;
+        await processResponse(response, (success, responseData) => {
+            if (success) {
+                callback(true);
+            } else {
+                callback(false, responseData);
             }
-            default: {
-                const responseData = await response.json();
-                callback(false, responseData.error);
-            }
-        }
+        });
+    } catch (error) {
+        callback(false, error.message);
     }
-}
-
-function getHostUrl() {
-    //let location = window.location;
-    //return location.protocol + '//' + location.hostname;
-    return "http://localhost/api/v1"
 }
 

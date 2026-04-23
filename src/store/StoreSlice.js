@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { configureStore, combineReducers  } from '@reduxjs/toolkit';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
@@ -19,6 +19,12 @@ const storeSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
+    setFilter: (state, action) => {
+      state.filter = action.payload;
+    },
+    setSortKind: (state, action) => {
+      state.sortKind = action.payload;
+    }
   },
 });
 
@@ -29,7 +35,7 @@ const rootReducer = combineReducers({
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export const { setUser} = storeSlice.actions;
+export const { setUser, setFilter, setSortKind } = storeSlice.actions;
 
 export const store = configureStore({
   reducer: persistedReducer,

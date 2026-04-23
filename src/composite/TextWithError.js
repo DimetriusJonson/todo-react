@@ -14,7 +14,7 @@ function TextWithError({ name, inputType, value, placeholder, error, onChange })
         <input ref={inputRef} className={classNames} type={inputType} id={name} name={name}
           value={value} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} />
       </div>
-      {error && error.length > 0 && <p class="help is-danger">{error}</p>}
+      {error && error.length > 0 && <p className="help is-danger">{error}</p>}
     </>
   );
 }

@@ -29,7 +29,7 @@ function MessageBanner({ messages, setMessages }) {
 
 export function showError(messages, setMessages, msg) {
     let maxId = Math.max(...messages.map(item => item.id));
-    let id = isNaN(maxId) ? maxId + 1 : 0;
+    let id = isFinite(maxId) ? maxId + 1 : 0;
 
     messages.push({ id: id, msg: msg, kind: 'ERROR'});
 
