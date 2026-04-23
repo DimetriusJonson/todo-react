@@ -8,13 +8,10 @@ const storeSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
-    setApiInProgress: (state, action) => {
-      state.apiInProgress = action.payload;
-    },
   },
 });
 
-export const { setUser, setApiInProgress } = storeSlice.actions;
+export const { setUser} = storeSlice.actions;
 
 export const store = configureStore({
   reducer: {

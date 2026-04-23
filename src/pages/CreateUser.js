@@ -25,7 +25,7 @@ function CreateUser() {
 
         setApiInProgress(true);
         try {
-            await ApiCreateUser(userName, password, dispatch, (success, userOrError, validateErrors) => {
+            await ApiCreateUser(userName, password, (success, userOrError, validateErrors) => {
                 if (success) {
                     dispatch(setUser(userOrError));
                     showInfo(messages, setMessages, 'Пользователь успешно создан.');

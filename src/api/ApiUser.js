@@ -1,12 +1,9 @@
-import { setApiInProgress } from '../store/StoreSlice';
-
-export async function ApiCreateUser(userName, password, dispatch, callback) {
+export async function ApiCreateUser(userName, password, callback) {
     let data = {
         "username": userName,
         "password": password,
     };
 
-    dispatch(setApiInProgress(true));
     try {
         const response = await fetch(getHostUrl() + '/users', {
             method: 'POST',
@@ -25,18 +22,15 @@ export async function ApiCreateUser(userName, password, dispatch, callback) {
         });
     } catch (error) {
         callback(false, error.message);
-    } finally {
-        dispatch(setApiInProgress(false));
     }
 }
 
-export async function ApiLogin(userName, password, dispatch, callback) {
+export async function ApiLogin(userName, password, callback) {
     let data = {
         "username": userName,
         "password": password,
     };
 
-    dispatch(setApiInProgress(true));
     try {
         const response = await fetch(getHostUrl() + 'users/login', {
             method: 'POST',
@@ -55,8 +49,6 @@ export async function ApiLogin(userName, password, dispatch, callback) {
         });
     } catch (error) {
         callback(false, error.message);
-    } finally {
-        dispatch(setApiInProgress(false));
     }
 }
 
