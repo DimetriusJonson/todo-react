@@ -1,8 +1,12 @@
 import { Link } from 'react-router';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 function Navbar() {
     const [navLinksActive, setNavLinksActive] = useState(false);
+    const user = useSelector((state) => state.settings.user);
+
+    let isLoggedIn = user && user.token && user.token.length > 0;
 
     const onBurgerClick = (e) => {
         e.preventDefault();
@@ -26,8 +30,13 @@ function Navbar() {
             <div className={`navbar-menu ${navLinksActive ? 'is-active' : ''}`} id="nav-links">
                 <div className="navbar-end">
                     <div className="buttons">
-                        <div className="navbar-item px-0"><Link className="button is-warning is-soft is-rounded" to='/createUser'>Создать пользователя</Link></div>
-                        <div className="navbar-item pl-0"><Link className="button is-light is-rounded" to='/login'>Войти</Link></div>
+                        {isLoggedIn ? (
+                            <div className="navbar-item"><Link className="button is-warning is-light is-rounded" to='/logout'>{'Выйти ' + user.name}</Link></div>
+                        ) : (<>
+                            <div className="navbar-item px-0"><Link className="button is-warning is-soft is-rounded" to='/createUser'>Создать пользователя</Link></div>
+                            <div className="navbar-item pl-0"><Link className="button is-light is-rounded" to='/login'>Войти</Link></div>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

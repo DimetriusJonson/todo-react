@@ -32,7 +32,7 @@ export async function ApiLogin(userName, password, callback) {
     };
 
     try {
-        const response = await fetch(getHostUrl() + 'users/login', {
+        const response = await fetch(getHostUrl() + '/users/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -89,7 +89,8 @@ async function processResponse(response, callback) {
 }
 
 function getHostUrl() {
-    let location = window.location;
-    return location.protocol + '//' + location.hostname;
+    //let location = window.location;
+    //return location.protocol + '//' + location.hostname;
+    return "http://localhost/api/v1"
 }
 
