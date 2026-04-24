@@ -10,9 +10,8 @@ import { setUser } from '../store/StoreSlice';
 import { useNavigate } from "react-router-dom";
 
 function CreateUser() {
-    const [messages, setMessages] = useState([]);
     const [apiInProgress, setApiInProgress] = useState(false);
-
+    
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -28,13 +27,13 @@ function CreateUser() {
             await apiCreateUser(userName, password, (success, userOrError, userError) => {
                 if (success) {
                     dispatch(setUser(userOrError));
-                    showInfo(messages, setMessages, 'Пользователь успешно создан.');
+                    showInfo(dispatch, 'Пользователь успешно создан.');
                     navigate("/login");
                 } else {
                     if (userError && userError.validateErrors) {
                         setErrors(userError.validateErrors);
                     } else {
-                        showError(messages, setMessages, userOrError);
+                        showError(dispatch, userOrError);
                     }
                 }
             });
@@ -53,7 +52,7 @@ function CreateUser() {
                     <div className="field"><div className="control"><Button className="is-primary" label="Создать" loading={apiInProgress} /></div></div>
                 </fieldset>
             </form>
-            <MessageBanner messages={messages} setMessages={setMessages} />
+            <MessageBanner />
         </section>
     );
 }

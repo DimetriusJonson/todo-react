@@ -14,7 +14,6 @@ function TasksPanel() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [messages, setMessages] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [apiInProgress, setApiInProgress] = useState(false);
 
@@ -50,9 +49,9 @@ function TasksPanel() {
         if (success) {
           info.target.checked = taskOrError.completed_at;
           tasks.filter(t => t.id === taskOrError.id).forEach(t => t.completed_at = taskOrError.completed_at);
-          showInfo(messages, setMessages, 'Задача сохранена.');
+          showInfo(dispatch, 'Задача сохранена.');
         } else {
-          showError(messages, setMessages, taskOrError);
+          showError(dispatch, taskOrError);
         }
       });
     } finally {
@@ -90,7 +89,7 @@ function TasksPanel() {
           }
         </tbody>
       </table>
-      <MessageBanner messages={messages} setMessages={setMessages} />
+      <MessageBanner />
     </>
   );
 }

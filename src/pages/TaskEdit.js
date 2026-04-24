@@ -17,7 +17,6 @@ import { priorityName } from '../util/TaskHelper';
 function TaskEdit({ mainTitle }) {
     const { id } = useParams();
 
-    const [messages, setMessages] = useState([]);
     const [apiInProgress, setApiInProgress] = useState(false);
     const dispatch = useDispatch();
 
@@ -82,7 +81,7 @@ function TaskEdit({ mainTitle }) {
 
             await apiSaveTask(patch, user.token, (success, taskOrError, userError) => {
                 if (success) {
-                    showInfo(messages, setMessages, 'Задача сохранена.');
+                    showInfo(dispatch, 'Задача сохранена.');
                     navigate("/task/" + taskOrError.id);
                 } else {
                     if (userError && userError.validateErrors) {
@@ -91,7 +90,7 @@ function TaskEdit({ mainTitle }) {
                         dispatch(setUser({}));
                         navigate("/login")
                     } else {
-                        showError(messages, setMessages, taskOrError);
+                        showError(dispatch, taskOrError);
                     }
                 }
             });
@@ -144,7 +143,7 @@ function TaskEdit({ mainTitle }) {
                     </fieldset>
                 </form>
             </div>
-            <MessageBanner messages={messages} setMessages={setMessages} />
+            <MessageBanner />
         </section>
     );
 }

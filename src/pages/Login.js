@@ -11,11 +11,11 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
     const dispatch = useDispatch();
+
     const navigate = useNavigate();
     const user = useSelector((state) => state.settings.user);
 
     const [passAutoFocus, setPassAutoFocus] = useState(false);
-    const [messages, setMessages] = useState([]);
     const [apiInProgress, setApiInProgress] = useState(false);
 
     const [errors, setErrors] = useState(new Map());
@@ -38,13 +38,13 @@ function Login() {
             await apiLogin(userName, password, (success, userOrError, userError) => {
                 if (success) {
                     dispatch(setUser(userOrError));
-                    showInfo(messages, setMessages, 'Вы вошли!');
+                    showInfo(dispatch, 'Вы вошли!');
                     navigate("/");
                 } else {
                     if (userError && userError.validateErrors) {
                         setErrors(userError.validateErrors);
                     } else {
-                        showError(messages, setMessages, userOrError);
+                        showError(dispatch, userOrError);
                     }
                 }
             });
@@ -63,7 +63,7 @@ function Login() {
                     <div className="field"><div className="control"><Button className="is-primary" label="Войти" loading={apiInProgress} /></div></div>
                 </fieldset>
             </form>
-            <MessageBanner messages={messages} setMessages={setMessages} />
+            <MessageBanner />
         </section>
     );
 }

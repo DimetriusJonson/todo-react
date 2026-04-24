@@ -1,5 +1,5 @@
 import Button from "../components/Button";
-import MessageBanner from "../composite/MessageBanner";
+import MessageBanner, { showInfo } from "../composite/MessageBanner";
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
@@ -16,8 +16,6 @@ function TaskView() {
     const dispatch = useDispatch();
     const [apiInProgress, setApiInProgress] = useState(false);
 
-    const [messages, setMessages] = useState([]);
-
     const user = useSelector((state) => state.settings.user);
     const [task, setTask] = useState({});
 
@@ -28,12 +26,13 @@ function TaskView() {
         try {
             await apiDeleteTask(id, user.token, (success, taskOrError, userError) => {
                 if (success) {
+                    showInfo(dispatch, 'Задача удалена.');
                     navigate("/");
                 } else if (userError && userError.unAuthorized) {
                     dispatch(setUser({}));
                     navigate("/login")
                 } else {
-                    showError(messages, setMessages, taskOrError);
+                    showError(dispatch, taskOrError);
                 }
             });
         } finally {
@@ -92,7 +91,7 @@ function TaskView() {
                     </div>
                 </div>
             </div>
-            <MessageBanner messages={messages} setMessages={setMessages} />
+            <MessageBanner />
         </section>
     );
 }

@@ -1,7 +1,5 @@
 import Button from "../components/Button";
 import TasksPanel from "../composite/TasksPanel";
-import MessageBanner from "../composite/MessageBanner";
-import { useState } from 'react';
 import SelectInput from "../components/SelectInput";
 import { useSelector, useDispatch } from 'react-redux';
 import { setFilter, setSortKind } from "../store/StoreSlice";
@@ -10,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 function Home() {
     const navigate = useNavigate();
 
-    const [messages, setMessages] = useState([]);
     const dispatch = useDispatch();
     const filter = useSelector((state) => state.settings.filter);
     const sortKind = useSelector((state) => state.settings.sortKind);
@@ -34,7 +31,6 @@ function Home() {
     ];
 
     return (
-
         <section className="section is-paddingless">
             <div className="container">
                 <nav className="level">
@@ -45,16 +41,13 @@ function Home() {
                         </div>
                     </div>
                     <div className="level-right">
-                        <Button className="level-item is-light" id="create_button" label="Создать" onClick={() => navigate('/task/create')}/>
+                        <Button className="level-item is-light" id="create_button" label="Создать" onClick={() => navigate('/task/create')} />
                     </div>
                 </nav>
 
                 <TasksPanel />
             </div>
-            <MessageBanner messages={messages} setMessages={setMessages} />
         </section>
-
-
     );
 }
 

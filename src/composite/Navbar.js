@@ -11,7 +11,6 @@ import MessageBanner from "../composite/MessageBanner";
 function Navbar() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [messages, setMessages] = useState([]);
     const [apiInProgress, setApiInProgress] = useState(false);
     const [navLinksActive, setNavLinksActive] = useState(false);
     const user = useSelector((state) => state.settings.user);
@@ -31,10 +30,10 @@ function Navbar() {
             await apiLogout(user.token, (success, error) => {
                 if (success) {
                     dispatch(setUser({}));
-                    showInfo(messages, setMessages, 'Вы вышли!');
+                    showInfo(dispatch, 'Вы вышли!');
                     navigate("/");
                 } else {
-                    showError(messages, setMessages, error);
+                    showError(dispatch, error);
                 }
             });
         } finally {
@@ -71,7 +70,7 @@ function Navbar() {
                 </div>
             </div>
         </nav>
-        <MessageBanner messages={messages} setMessages={setMessages} />
+        <MessageBanner />
         </>
     );
 }

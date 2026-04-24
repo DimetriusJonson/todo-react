@@ -1,9 +1,15 @@
+import { addMessage, removeMessage } from "../store/StoreSlice";
+import { useDispatch, useSelector } from 'react-redux';
 
-function MessageBanner({ messages, setMessages }) {
+function MessageBanner() {
+
+    const dispatch = useDispatch();
+    const messages = useSelector((state) => state.messages);
+
     let onClick = ((e) => {
         let idStr = e.target.id;
-        let id = parseInt(idStr.substring(idStr.indexOf('_') + 1));
-        setMessages(messages.filter(m => m.id !== id));
+        let id = idStr.substring(idStr.indexOf('_') + 1);
+        dispatch(removeMessage(id));
     });
 
     return (
@@ -14,7 +20,7 @@ function MessageBanner({ messages, setMessages }) {
             width: '100%',
             zIndex: '1000'
         }}>
-            {messages.map((message, index) => (
+            {messages.map((message) => (
                 <p key={message.id} className="field">
                     <span className={'tag is-medium ' + msg_style(message)}>
                         {message.msg}
@@ -27,25 +33,21 @@ function MessageBanner({ messages, setMessages }) {
     );
 }
 
-export function showError(messages, setMessages, msg) {
-    let maxId = Math.max(...messages.map(item => item.id));
-    let id = isFinite(maxId) ? maxId + 1 : 0;
-
-    setMessages([...messages, { id: id, msg: msg, kind: 'ERROR'}]);
+export function showError(dispatch, msg) {
+    const id = crypto.randomUUID();
+    dispatch(addMessage({ id: id, msg: msg, kind: 'ERROR'}));
 
     setTimeout(() => {
-        setMessages(messages.filter(m => m.id !== id));
+        dispatch(removeMessage(id));
     }, 30000);
 }
 
-export function showInfo(messages, setMessages, msg) {
-    let maxId = Math.max(...messages.map(item => item.id));
-    let id = isNaN(maxId) ? maxId + 1 : 0;
-
-    setMessages([...messages, { id: id, msg: msg, kind: 'INFO'}]);
+export function showInfo(dispatch, msg) {
+    const id = crypto.randomUUID();
+    dispatch(addMessage({ id: id, msg: msg, kind: 'INFO'}));
 
     setTimeout(() => {
-        setMessages(messages.filter(m => m.id !== id));
+        dispatch(removeMessage(id));
     }, 5000);
 }
 
