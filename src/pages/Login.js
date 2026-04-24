@@ -25,14 +25,14 @@ function Login() {
 
         setApiInProgress(true);
         try {
-            await ApiLogin(userName, password, (success, userOrError, validateErrors) => {
+            await ApiLogin(userName, password, (success, userOrError, userError) => {
                 if (success) {
                     dispatch(setUser(userOrError));
                     showInfo(messages, setMessages, 'Вы вошли!');
                     navigate("/");
                 } else {
-                    if (validateErrors) {
-                        setErrors(validateErrors);
+                    if (userError && userError.validateErrors) {
+                        setErrors(userError.validateErrors);
                     } else {
                         showError(messages, setMessages, userOrError);
                     }

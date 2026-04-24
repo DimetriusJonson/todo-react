@@ -1,3 +1,4 @@
+
 export async function processResponse(response, callback) {
     if (response.ok) {
         const responseData = await response.json();
@@ -6,7 +7,7 @@ export async function processResponse(response, callback) {
         switch (response.status) {
             case 401: {
                 const responseData = await response.json();
-                callback(false, responseData.error)
+                callback(false, responseData.error, {unAuthorized: true})
                 break;
             }
             case 422: {
@@ -22,7 +23,7 @@ export async function processResponse(response, callback) {
                         );
                     }
                 });
-                callback(false, responseData.error, errorsMap);
+                callback(false, responseData.error, {validateErrors: errorsMap});
                 break;
             }
             default: {

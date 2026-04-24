@@ -1,13 +1,18 @@
 import { useState, useEffect } from 'react';
 import Checkbox from "../components/Checkbox";
 import { Link } from 'react-router';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { ApiTasks } from '../api/ApiTask';
 import { showError, showInfo } from "../composite/MessageBanner";
 import { ApiSaveTask } from '../api/ApiTask';
 import MessageBanner from "../composite/MessageBanner";
+import { useNavigate } from "react-router-dom";
+import { setUser } from '../store/StoreSlice';
 
 function TasksPanel() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [messages, setMessages] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [apiInProgress, setApiInProgress] = useState(false);
@@ -18,9 +23,12 @@ function TasksPanel() {
 
   useEffect(() => {
     const loadTasks = async () => {
-      await ApiTasks(user.token, (success, tasksOrError) => {
+      await ApiTasks(user.token, (success, tasksOrError, userError) => {
         if (success) {
           setTasks(tasksOrError);
+        } else if (userError && userError.unAuthorized) {
+          dispatch(setUser({}));
+          navigate("/login")
         }
       });
     };
@@ -30,12 +38,12 @@ function TasksPanel() {
     } else {
       setTasks([]);
     }
-  }, [user]);
+  }, [user, dispatch, navigate]);
 
   let completedOnChange = async (info) => {
     setApiInProgress(true);
     try {
-      let patch = { id: parseInt(info.name.substring(info.name.indexOf('_') + 1)), completed_at: info.value ? new Date().toISOString() : '-262143-01-01T00:00:00Z' };
+      let patch = { id: parseInt(info.name.substring(info.name.indexOf('_') + 1)), completed_at: info.value ? new Date().toISOString() : null };
 
       await ApiSaveTask(patch, user.token, (success, taskOrError) => {
         if (success) {
