@@ -13,11 +13,11 @@ export async function ApiTasks(token, callback) {
             },
         });
 
-        await processResponse(response, (success, responseData) => {
+        await processResponse(response, (success, responseData, userError) => {
             if (success) {
                 callback(true, responseData.data);
             } else {
-                callback(false, responseData);
+                callback(false, responseData, userError);
             }
         });
     } catch (error) {
@@ -35,14 +35,14 @@ export async function ApiGetTask(id, token, callback) {
             },
         });
 
-        await processResponse(response, (success, responseData) => {
+        await processResponse(response, (success, responseData, userError) => {
             if (success) {
                 if (responseData.completed_at === MIN_COMPLETED_AT) {
                     responseData.completed_at = null;
                 }
                 callback(true, responseData);
             } else {
-                callback(false, responseData);
+                callback(false, responseData, userError);
             }
         });
     } catch (error) {
@@ -65,11 +65,11 @@ export async function ApiSaveTask(task, token, callback) {
             body: JSON.stringify(task),
         });
 
-        await processResponse(response, (success, responseData) => {
+        await processResponse(response, (success, responseData, userError) => {
             if (success) {
                 callback(true, responseData);
             } else {
-                callback(false, responseData);
+                callback(false, responseData, userError);
             }
         });
     } catch (error) {
@@ -87,11 +87,11 @@ export async function ApiDeleteTask(id, token, callback) {
             },
         });
 
-        await processResponse(response, (success, responseData) => {
+        await processResponse(response, (success, responseData, userError) => {
             if (success) {
                 callback(true, responseData);
             } else {
-                callback(false, responseData);
+                callback(false, responseData, userError);
             }
         });
     } catch (error) {

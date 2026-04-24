@@ -28,7 +28,7 @@ function TasksPanel() {
           setTasks(tasksOrError);
         } else if (userError && userError.unAuthorized) {
           dispatch(setUser({}));
-          navigate("/login")
+          setTasks([]);
         }
       });
     };
