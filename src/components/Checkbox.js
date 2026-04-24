@@ -1,4 +1,4 @@
-function Checkbox({ name, className, value, disabled, onChange }) {
+function Checkbox({ name, title, className, value, disabled, onChange }) {
 
     let checkOnChange = (event) => {
         event.preventDefault();
@@ -14,7 +14,7 @@ function Checkbox({ name, className, value, disabled, onChange }) {
     return (
         <label className={'b-checkbox checkbox ' + className}>
             <input type="checkbox" id={id} name={name} checked={value} onChange={checkOnChange} disabled={disabled}/>
-            <span className="check is-warning"></span>
+            <span className="check is-warning" title={title}></span>
         </label>
     );
 }

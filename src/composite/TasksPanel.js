@@ -96,7 +96,7 @@ function TasksPanel() {
 
 function taskCompletedAt(task) {
   if (task.completed_at) {
-    return task.completed_at;
+    return new Date(task.completed_at).toLocaleString();
   } else {
     return '';
   }
