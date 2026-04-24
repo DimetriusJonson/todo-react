@@ -31,7 +31,7 @@ export function showError(messages, setMessages, msg) {
     let maxId = Math.max(...messages.map(item => item.id));
     let id = isFinite(maxId) ? maxId + 1 : 0;
 
-    messages.push({ id: id, msg: msg, kind: 'ERROR'});
+    setMessages([...messages, { id: id, msg: msg, kind: 'ERROR'}]);
 
     setTimeout(() => {
         setMessages(messages.filter(m => m.id !== id));
@@ -42,7 +42,7 @@ export function showInfo(messages, setMessages, msg) {
     let maxId = Math.max(...messages.map(item => item.id));
     let id = isNaN(maxId) ? maxId + 1 : 0;
 
-    messages.push({ id: id, msg: msg, kind: 'INFO'});
+    setMessages([...messages, { id: id, msg: msg, kind: 'INFO'}]);
 
     setTimeout(() => {
         setMessages(messages.filter(m => m.id !== id));

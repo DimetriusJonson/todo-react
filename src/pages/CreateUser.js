@@ -10,6 +10,7 @@ import { setUser } from '../store/StoreSlice';
 import { useNavigate } from "react-router-dom";
 
 function CreateUser() {
+    console.log('render');
     const [messages, setMessages] = useState([]);
     const [apiInProgress, setApiInProgress] = useState(false);
 
