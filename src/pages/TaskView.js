@@ -7,6 +7,7 @@ import { ApiGetTask, ApiDeleteTask } from '../api/ApiTask';
 import { showError } from "../composite/MessageBanner";
 import { setUser } from '../store/StoreSlice';
 import { useParams } from 'react-router-dom';
+import { taskPriorityName } from '../util/TaskHelper';
 
 function TaskView() {
     const { id } = useParams(); 
@@ -76,12 +77,12 @@ function TaskView() {
                             </div>
                             <div className="media-content">
                                 <p className="title is-4">{task.title}</p>
-                                <p className="subtitle is-6">{priorityName(task)}</p>
+                                <p className="subtitle is-6">{taskPriorityName(task)}</p>
                             </div>
                         </div>
 
                         <div className="content">
-                            {task.description ? (<p>{task.description}</p>) : ''}
+                            {task.description && (<p>{task.description}</p>)}
                         </div>
 
                         <div className="field is-grouped">
@@ -94,16 +95,6 @@ function TaskView() {
             <MessageBanner messages={messages} setMessages={setMessages} />
         </section>
     );
-}
-
-function priorityName(task) {
-    switch (task.priroity) {
-        case "C": return "Критический";
-        case "H": return "Высокий";
-        case "N": return "Нормальный";
-        case "L": return "Низкий";
-        default: return "";
-    }
 }
 
 export default TaskView;

@@ -8,6 +8,7 @@ import { ApiSaveTask } from '../api/ApiTask';
 import MessageBanner from "../composite/MessageBanner";
 import { useNavigate } from "react-router-dom";
 import { setUser } from '../store/StoreSlice';
+import { taskPriorityName } from '../util/TaskHelper';
 
 function TasksPanel() {
   const dispatch = useDispatch();
@@ -74,9 +75,9 @@ function TasksPanel() {
         </thead>
         <tbody>
           {tasks.length > 0 ? (
-            tasks.filter(t => filterTask(t, filter)).map((task, index) => (
+            tasks.filter(t => filterTask(t, filter)).map((task) => (
               <tr key={task.id}>
-                <td className={priorityStyle(task)}>{priorityName(task)}</td>
+                <td className={priorityStyle(task)}>{taskPriorityName(task)}</td>
                 <td>
                   <Checkbox className="is-medium" name={'completed_' + task.id} value={task.completed_at} onChange={completedOnChange} title={taskCompletedAt(task)} disabled={apiInProgress} />
                 </td>
@@ -115,19 +116,6 @@ function priorityStyle(task) {
   }
 }
 
-function priorityName(task) {
-  if (task.priority) {
-    switch (task.priority) {
-      case 'C': return "Критический";
-      case 'H': return "Высокий";
-      case "N": return "Нормальный";
-      default: return "Низкий";
-    }
-  } else {
-    return '';
-  }
-}
-
 function filterTask(task, filter) {
   if (filter) {
     switch (filter) {
@@ -144,7 +132,7 @@ function sortTask(task1, task2, sortKind) {
   if (sortKind) {
     switch (sortKind) {
       case 'Title': return task1.title.localeCompare(task2.title);
-      case 'Priority': return priorityName(task1).localeCompare(priorityName(task2));
+      case 'Priority': return taskPriorityName(task1).localeCompare(taskPriorityName(task2));
       default: return task1.id - task2.id;
     }
   } else {

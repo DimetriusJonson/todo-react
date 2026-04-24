@@ -12,9 +12,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ApiSaveTask, ApiGetTask } from '../api/ApiTask';
 import { setUser } from '../store/StoreSlice';
 import { useParams } from 'react-router-dom';
+import { priorityName } from '../util/TaskHelper';
 
 function TaskEdit({ mainTitle }) {
-    const { id } = useParams(); 
+    const { id } = useParams();
 
     const [messages, setMessages] = useState([]);
     const [apiInProgress, setApiInProgress] = useState(false);
@@ -100,10 +101,10 @@ function TaskEdit({ mainTitle }) {
     };
 
     let priorities = [
-        { value: "C", text: "Критический" },
-        { value: "H", text: "Высокий" },
-        { value: "N", text: "Нормальный" },
-        { value: "L", text: "Низкий" }
+        priorityToOption('C'),
+        priorityToOption('H'),
+        priorityToOption('N'),
+        priorityToOption('L')
     ];
 
     return (
@@ -146,6 +147,10 @@ function TaskEdit({ mainTitle }) {
             <MessageBanner messages={messages} setMessages={setMessages} />
         </section>
     );
+}
+
+function priorityToOption(priority) {
+    return { value: priority, text: priorityName(priority) };
 }
 
 export default TaskEdit;
