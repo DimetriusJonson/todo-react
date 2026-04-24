@@ -137,7 +137,7 @@ function TaskEdit({ mainTitle }) {
                                 <Button className="is-primary" label="Сохранить" loading={apiInProgress} />
                             </div>
                             <div className="control">
-                                <Button className="is-light" label="Отмена" onClick={() => { if (id) { navigate("/task/" + id); } else { navigate("/"); } }} />
+                                <Button className="is-light" label="Отмена" onClick={() => { if (id) { navigate("/task/" + id); } else { navigate("/"); } }} loading={apiInProgress}/>
                             </div>
                         </div>
                     </fieldset>

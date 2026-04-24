@@ -3,9 +3,8 @@ function Button({ id, className, disabled, label, loading, onClick }) {
     e.target.blur();
   };
 
-  let loadingClass = loading ? " is-loading" : "";
   return (
-    <button id={id} className={'button is-rounded' + loadingClass + ' ' + className} onClick={onClick} onMouseUp={onMouseup} disabled={disabled}> {label} </button>
+    <button id={id} className={'button is-rounded' + (loading ? ' is-loading' : '') + ' ' + className} onClick={onClick} onMouseUp={onMouseup} disabled={disabled}> {label} </button>
   );
 }
 
