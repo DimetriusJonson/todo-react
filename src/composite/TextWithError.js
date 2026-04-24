@@ -1,7 +1,11 @@
 import { useRef } from 'react';
 
-function TextWithError({ name, inputType, value, placeholder, error, onChange }) {
+function TextWithError({ name, inputType, value, placeholder, error, onChange, focus }) {
   const inputRef = useRef(null);
+
+  if (inputRef && focus === true) {
+    inputRef.current.focus();
+  }
 
   let classNames = "input";
   if (error && error.length > 0) {

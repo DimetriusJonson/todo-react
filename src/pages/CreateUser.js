@@ -10,7 +10,6 @@ import { setUser } from '../store/StoreSlice';
 import { useNavigate } from "react-router-dom";
 
 function CreateUser() {
-    console.log('render');
     const [messages, setMessages] = useState([]);
     const [apiInProgress, setApiInProgress] = useState(false);
 
@@ -50,7 +49,7 @@ function CreateUser() {
             <form className="box" onSubmit={handleSubmit}>
                 <fieldset disabled={apiInProgress}>
                     <div className="field"><TextWithError name="userName" placeholder="Имя пользователя" value={userName} onChange={(v) => setUserName(v)} error={errors.get('username')} /></div>
-                    <div className="field"><TextWithError name="password" placeholder="Пароль" inputType={"password"} onChange={(v) => setPassword(v)} error={errors.get('password')} /></div>
+                    <div className="field"><TextWithError name="password" placeholder="Пароль" inputType={"password"} onChange={(v) => setPassword(v)} error={errors.get('password')}/></div>
                     <div className="field"><div className="control"><Button className="is-primary" label="Создать" loading={apiInProgress} /></div></div>
                 </fieldset>
             </form>
