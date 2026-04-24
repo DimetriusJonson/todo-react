@@ -5,6 +5,7 @@ import CreateUser from "./pages/CreateUser";
 import Login from "./pages/Login";
 import TaskEdit from "./pages/TaskEdit";
 import TaskView from "./pages/TaskView";
+import MessageBanner from "./composite/MessageBanner";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/task/:id" element={<TaskView/>} />
           </Routes>
         </BrowserRouter>
+        <MessageBanner />
       </div>
     </section>
   );

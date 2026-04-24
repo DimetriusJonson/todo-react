@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Button from "../components/Button";
-import MessageBanner from "../composite/MessageBanner";
 import { showError, showInfo } from "../composite/MessageBanner";
 import MainTitle from "../components/MainTitle";
 import TextWithError from '../composite/TextWithError';
@@ -52,7 +51,6 @@ function CreateUser() {
                     <div className="field"><div className="control"><Button className="is-primary" label="Создать" loading={apiInProgress} /></div></div>
                 </fieldset>
             </form>
-            <MessageBanner />
         </section>
     );
 }

@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { apiTasks } from '../api/ApiTask';
 import { showError, showInfo } from "../composite/MessageBanner";
 import { apiSaveTask } from '../api/ApiTask';
-import MessageBanner from "../composite/MessageBanner";
 import { useNavigate } from "react-router-dom";
 import { setUser } from '../store/StoreSlice';
 import { taskPriorityName } from '../util/TaskHelper';
@@ -89,7 +88,6 @@ function TasksPanel() {
           }
         </tbody>
       </table>
-      <MessageBanner />
     </>
   );
 }

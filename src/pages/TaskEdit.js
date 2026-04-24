@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import Button from "../components/Button";
-import MessageBanner from "../composite/MessageBanner";
 import { showError, showInfo } from "../composite/MessageBanner";
 import MainTitle from "../components/MainTitle";
 import TextWithError from '../composite/TextWithError';
@@ -143,7 +142,6 @@ function TaskEdit({ mainTitle }) {
                     </fieldset>
                 </form>
             </div>
-            <MessageBanner />
         </section>
     );
 }

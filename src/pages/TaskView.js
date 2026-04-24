@@ -1,5 +1,5 @@
 import Button from "../components/Button";
-import MessageBanner, { showInfo } from "../composite/MessageBanner";
+import { showInfo } from "../composite/MessageBanner";
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
@@ -91,7 +91,6 @@ function TaskView() {
                     </div>
                 </div>
             </div>
-            <MessageBanner />
         </section>
     );
 }

@@ -6,7 +6,6 @@ import { setUser } from '../store/StoreSlice';
 import { showError, showInfo } from "../composite/MessageBanner";
 import { useNavigate } from "react-router-dom";
 import { apiLogout } from '../api/ApiUser';
-import MessageBanner from "../composite/MessageBanner";
 
 function Navbar() {
     const navigate = useNavigate();
@@ -70,7 +69,6 @@ function Navbar() {
                 </div>
             </div>
         </nav>
-        <MessageBanner />
         </>
     );
 }
