@@ -1,8 +1,7 @@
 
-export async function makeRequest(path, method, token, requestData, callback) {
+export async function makeRequest(path, method, token, requestData, setApiInProgress, callback) {
+    setApiInProgress(true);
     try {
-        console.log(getHostUrl() + path + ' ' + method + ' ' + token);
-
         const response = await fetch(getHostUrl() + path, {
             method: method,
             headers: {
@@ -21,6 +20,8 @@ export async function makeRequest(path, method, token, requestData, callback) {
         });
     } catch (error) {
         callback(false, error.message);
+    } finally {
+        setApiInProgress(false);
     }
 }
 

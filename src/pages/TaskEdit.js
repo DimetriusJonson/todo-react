@@ -32,7 +32,7 @@ function TaskEdit({ mainTitle }) {
 
     useEffect(() => {
         const loadTask = async () => {
-            await apiGetTask(id, user.token, (success, taskOrError, userError) => {
+            await apiGetTask(id, user.token, setApiInProgress, (success, taskOrError, userError) => {
                 if (success) {
                     setOldTask(taskOrError);
                     setTitle(taskOrError.title);
@@ -58,44 +58,39 @@ function TaskEdit({ mainTitle }) {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        setApiInProgress(true);
-        try {
-            let patch = { id: parseInt(id) };
-            if (title !== oldTask.title) {
-                patch.title = title;
-            }
-
-            if (description !== oldTask.description) {
-                patch.description = description;
-            }
-
-            if (priority !== oldTask.priority) {
-                patch.priority = priority;
-            }
-
-            let completed_at = completed ? new Date().toISOString() : null;
-            if (completed_at !== oldTask.completed_at) {
-                patch.completed_at = completed_at;
-            }
-
-            await apiSaveTask(patch, user.token, (success, taskOrError, userError) => {
-                if (success) {
-                    showInfo(dispatch, 'Задача сохранена.');
-                    navigate("/task/" + taskOrError.id);
-                } else {
-                    if (userError && userError.validateErrors) {
-                        setErrors(userError.validateErrors);
-                    } else if (userError && userError.unAuthorized) {
-                        dispatch(setUser({}));
-                        navigate("/login")
-                    } else {
-                        showError(dispatch, taskOrError);
-                    }
-                }
-            });
-        } finally {
-            setApiInProgress(false);
+        let patch = { id: parseInt(id) };
+        if (title !== oldTask.title) {
+            patch.title = title;
         }
+
+        if (description !== oldTask.description) {
+            patch.description = description;
+        }
+
+        if (priority !== oldTask.priority) {
+            patch.priority = priority;
+        }
+
+        let completed_at = completed ? new Date().toISOString() : null;
+        if (completed_at !== oldTask.completed_at) {
+            patch.completed_at = completed_at;
+        }
+
+        await apiSaveTask(patch, user.token, setApiInProgress, (success, taskOrError, userError) => {
+            if (success) {
+                showInfo(dispatch, 'Задача сохранена.');
+                navigate("/task/" + taskOrError.id);
+            } else {
+                if (userError && userError.validateErrors) {
+                    setErrors(userError.validateErrors);
+                } else if (userError && userError.unAuthorized) {
+                    dispatch(setUser({}));
+                    navigate("/login")
+                } else {
+                    showError(dispatch, taskOrError);
+                }
+            }
+        });
     };
 
     let priorities = [
@@ -136,7 +131,7 @@ function TaskEdit({ mainTitle }) {
                                 <Button className="is-primary" label="Сохранить" loading={apiInProgress} />
                             </div>
                             <div className="control">
-                                <Button className="is-light" label="Отмена" onClick={() => { if (id) { navigate("/task/" + id); } else { navigate("/"); } }} loading={apiInProgress}/>
+                                <Button className="is-light" label="Отмена" onClick={() => { if (id) { navigate("/task/" + id); } else { navigate("/"); } }} loading={apiInProgress} />
                             </div>
                         </div>
                     </fieldset>

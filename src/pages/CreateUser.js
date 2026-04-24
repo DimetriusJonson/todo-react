@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 function CreateUser() {
     const [apiInProgress, setApiInProgress] = useState(false);
-    
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -21,24 +21,19 @@ function CreateUser() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        setApiInProgress(true);
-        try {
-            await apiCreateUser(userName, password, (success, userOrError, userError) => {
-                if (success) {
-                    dispatch(setUser(userOrError));
-                    showInfo(dispatch, 'Пользователь успешно создан.');
-                    navigate("/login");
+        await apiCreateUser(userName, password, setApiInProgress, (success, userOrError, userError) => {
+            if (success) {
+                dispatch(setUser(userOrError));
+                showInfo(dispatch, 'Пользователь успешно создан.');
+                navigate("/login");
+            } else {
+                if (userError && userError.validateErrors) {
+                    setErrors(userError.validateErrors);
                 } else {
-                    if (userError && userError.validateErrors) {
-                        setErrors(userError.validateErrors);
-                    } else {
-                        showError(dispatch, userOrError);
-                    }
+                    showError(dispatch, userOrError);
                 }
-            });
-        } finally {
-            setApiInProgress(false);
-        }
+            }
+        });
     };
 
     return (
@@ -47,7 +42,7 @@ function CreateUser() {
             <form className="box" onSubmit={handleSubmit}>
                 <fieldset disabled={apiInProgress}>
                     <div className="field"><TextWithError name="userName" placeholder="Имя пользователя" value={userName} onChange={(v) => setUserName(v)} error={errors.get('username')} /></div>
-                    <div className="field"><TextWithError name="password" placeholder="Пароль" inputType={"password"} onChange={(v) => setPassword(v)} error={errors.get('password')}/></div>
+                    <div className="field"><TextWithError name="password" placeholder="Пароль" inputType={"password"} onChange={(v) => setPassword(v)} error={errors.get('password')} /></div>
                     <div className="field"><div className="control"><Button className="is-primary" label="Создать" loading={apiInProgress} /></div></div>
                 </fieldset>
             </form>

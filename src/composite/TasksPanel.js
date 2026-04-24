@@ -22,7 +22,7 @@ function TasksPanel() {
 
   useEffect(() => {
     const loadTasks = async () => {
-      await apiTasks(user.token, (success, tasksOrError, userError) => {
+      await apiTasks(user.token, setApiInProgress, (success, tasksOrError, userError) => {
         if (success) {
           setTasks(tasksOrError);
         } else if (userError && userError.unAuthorized) {
@@ -44,7 +44,7 @@ function TasksPanel() {
     try {
       let patch = { id: parseInt(info.name.substring(info.name.indexOf('_') + 1)), completed_at: info.value ? new Date().toISOString() : null };
 
-      await apiSaveTask(patch, user.token, (success, taskOrError) => {
+      await apiSaveTask(patch, user.token, setApiInProgress, (success, taskOrError) => {
         if (success) {
           info.target.checked = taskOrError.completed_at;
           tasks.filter(t => t.id === taskOrError.id).forEach(t => t.completed_at = taskOrError.completed_at);

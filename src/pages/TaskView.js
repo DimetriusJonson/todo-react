@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import { taskPriorityName } from '../util/TaskHelper';
 
 function TaskView() {
-    const { id } = useParams(); 
+    const { id } = useParams();
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -22,27 +22,22 @@ function TaskView() {
     let deleteOnClick = async (event) => {
         event.preventDefault();
 
-        setApiInProgress(true);
-        try {
-            await apiDeleteTask(id, user.token, (success, taskOrError, userError) => {
-                if (success) {
-                    showInfo(dispatch, 'Задача удалена.');
-                    navigate("/");
-                } else if (userError && userError.unAuthorized) {
-                    dispatch(setUser({}));
-                    navigate("/login")
-                } else {
-                    showError(dispatch, taskOrError);
-                }
-            });
-        } finally {
-            setApiInProgress(false);
-        }
+        await apiDeleteTask(id, user.token, setApiInProgress, (success, taskOrError, userError) => {
+            if (success) {
+                showInfo(dispatch, 'Задача удалена.');
+                navigate("/");
+            } else if (userError && userError.unAuthorized) {
+                dispatch(setUser({}));
+                navigate("/login")
+            } else {
+                showError(dispatch, taskOrError);
+            }
+        });
     }
 
     useEffect(() => {
         const loadTask = async () => {
-            await apiGetTask(id, user.token, (success, taskOrError, userError) => {
+            await apiGetTask(id, user.token, setApiInProgress, (success, taskOrError, userError) => {
                 if (success) {
                     setTask(taskOrError);
                 } else if (userError && userError.unAuthorized) {

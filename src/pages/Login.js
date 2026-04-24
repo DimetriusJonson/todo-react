@@ -32,24 +32,19 @@ function Login() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        setApiInProgress(true);
-        try {
-            await apiLogin(userName, password, (success, userOrError, userError) => {
-                if (success) {
-                    dispatch(setUser(userOrError));
-                    showInfo(dispatch, 'Вы вошли!');
-                    navigate("/");
+        await apiLogin(userName, password, setApiInProgress, (success, userOrError, userError) => {
+            if (success) {
+                dispatch(setUser(userOrError));
+                showInfo(dispatch, 'Вы вошли!');
+                navigate("/");
+            } else {
+                if (userError && userError.validateErrors) {
+                    setErrors(userError.validateErrors);
                 } else {
-                    if (userError && userError.validateErrors) {
-                        setErrors(userError.validateErrors);
-                    } else {
-                        showError(dispatch, userOrError);
-                    }
+                    showError(dispatch, userOrError);
                 }
-            });
-        } finally {
-            setApiInProgress(false);
-        }
+            }
+        });
     };
 
     return (
