@@ -3,7 +3,7 @@ import MessageBanner from "../composite/MessageBanner";
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { ApiGetTask, ApiDeleteTask } from '../api/ApiTask';
+import { apiGetTask, apiDeleteTask } from '../api/ApiTask';
 import { showError } from "../composite/MessageBanner";
 import { setUser } from '../store/StoreSlice';
 import { useParams } from 'react-router-dom';
@@ -26,7 +26,7 @@ function TaskView() {
 
         setApiInProgress(true);
         try {
-            await ApiDeleteTask(id, user.token, (success, taskOrError, userError) => {
+            await apiDeleteTask(id, user.token, (success, taskOrError, userError) => {
                 if (success) {
                     navigate("/");
                 } else if (userError && userError.unAuthorized) {
@@ -43,7 +43,7 @@ function TaskView() {
 
     useEffect(() => {
         const loadTask = async () => {
-            await ApiGetTask(id, user.token, (success, taskOrError, userError) => {
+            await apiGetTask(id, user.token, (success, taskOrError, userError) => {
                 if (success) {
                     setTask(taskOrError);
                 } else if (userError && userError.unAuthorized) {

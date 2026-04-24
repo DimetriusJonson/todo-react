@@ -4,7 +4,7 @@ import MessageBanner from "../composite/MessageBanner";
 import { showError, showInfo } from "../composite/MessageBanner";
 import MainTitle from "../components/MainTitle";
 import TextWithError from '../composite/TextWithError';
-import { ApiCreateUser } from '../api/ApiUser';
+import { apiCreateUser } from '../api/ApiUser';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../store/StoreSlice';
 import { useNavigate } from "react-router-dom";
@@ -25,7 +25,7 @@ function CreateUser() {
 
         setApiInProgress(true);
         try {
-            await ApiCreateUser(userName, password, (success, userOrError, userError) => {
+            await apiCreateUser(userName, password, (success, userOrError, userError) => {
                 if (success) {
                     dispatch(setUser(userOrError));
                     showInfo(messages, setMessages, 'Пользователь успешно создан.');

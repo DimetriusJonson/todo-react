@@ -4,7 +4,7 @@ import MessageBanner from "../composite/MessageBanner";
 import { showError, showInfo } from "../composite/MessageBanner";
 import MainTitle from "../components/MainTitle";
 import TextWithError from '../composite/TextWithError';
-import { ApiLogin } from '../api/ApiUser';
+import { apiLogin } from '../api/ApiUser';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../store/StoreSlice';
 import { useNavigate } from "react-router-dom";
@@ -25,7 +25,7 @@ function Login() {
 
         setApiInProgress(true);
         try {
-            await ApiLogin(userName, password, (success, userOrError, userError) => {
+            await apiLogin(userName, password, (success, userOrError, userError) => {
                 if (success) {
                     dispatch(setUser(userOrError));
                     showInfo(messages, setMessages, 'Вы вошли!');

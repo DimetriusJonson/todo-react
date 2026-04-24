@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../store/StoreSlice';
 import { showError, showInfo } from "../composite/MessageBanner";
 import { useNavigate } from "react-router-dom";
-import { ApiLogout } from '../api/ApiUser';
+import { apiLogout } from '../api/ApiUser';
 import MessageBanner from "../composite/MessageBanner";
 
 function Navbar() {
@@ -28,7 +28,7 @@ function Navbar() {
 
         setApiInProgress(true);
         try {
-            await ApiLogout(user.token, (success, error) => {
+            await apiLogout(user.token, (success, error) => {
                 if (success) {
                     dispatch(setUser({}));
                     showInfo(messages, setMessages, 'Вы вышли!');

@@ -9,7 +9,7 @@ import SelectWithLabel from '../components/SelectWithLabel';
 import CheckboxWithLabel from '../components/CheckboxWithLabel';
 import TextArea from '../components/TextArea';
 import { useSelector, useDispatch } from 'react-redux';
-import { ApiSaveTask, ApiGetTask } from '../api/ApiTask';
+import { apiSaveTask, apiGetTask } from '../api/ApiTask';
 import { setUser } from '../store/StoreSlice';
 import { useParams } from 'react-router-dom';
 import { priorityName } from '../util/TaskHelper';
@@ -34,7 +34,7 @@ function TaskEdit({ mainTitle }) {
 
     useEffect(() => {
         const loadTask = async () => {
-            await ApiGetTask(id, user.token, (success, taskOrError, userError) => {
+            await apiGetTask(id, user.token, (success, taskOrError, userError) => {
                 if (success) {
                     setOldTask(taskOrError);
                     setTitle(taskOrError.title);
@@ -80,7 +80,7 @@ function TaskEdit({ mainTitle }) {
                 patch.completed_at = completed_at;
             }
 
-            await ApiSaveTask(patch, user.token, (success, taskOrError, userError) => {
+            await apiSaveTask(patch, user.token, (success, taskOrError, userError) => {
                 if (success) {
                     showInfo(messages, setMessages, 'Задача сохранена.');
                     navigate("/task/" + taskOrError.id);

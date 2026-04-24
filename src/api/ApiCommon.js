@@ -1,5 +1,30 @@
 
-export async function processResponse(response, callback) {
+export async function makeRequest(path, method, token, requestData, callback) {
+    try {
+        console.log(getHostUrl() + path + ' ' + method + ' ' + token);
+
+        const response = await fetch(getHostUrl() + path, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: requestData ? JSON.stringify(requestData) : null,
+        });
+
+        await processResponse(response, (success, responseData, userError) => {
+            if (success) {
+                callback(true, responseData);
+            } else {
+                callback(false, responseData, userError);
+            }
+        });
+    } catch (error) {
+        callback(false, error.message);
+    }
+}
+
+async function processResponse(response, callback) {
     if (response.ok) {
         const responseData = await response.json();
         callback(true, responseData);
@@ -7,7 +32,7 @@ export async function processResponse(response, callback) {
         switch (response.status) {
             case 401: {
                 const responseData = await response.json();
-                callback(false, responseData.error, {unAuthorized: true})
+                callback(false, responseData.error, { unAuthorized: true })
                 break;
             }
             case 422: {
@@ -23,7 +48,7 @@ export async function processResponse(response, callback) {
                         );
                     }
                 });
-                callback(false, responseData.error, {validateErrors: errorsMap});
+                callback(false, responseData.error, { validateErrors: errorsMap });
                 break;
             }
             default: {
@@ -34,7 +59,7 @@ export async function processResponse(response, callback) {
     }
 }
 
-export function getHostUrl() {
+function getHostUrl() {
     //let location = window.location;
     //return location.protocol + '//' + location.hostname;
     return "http://localhost/api/v1"
