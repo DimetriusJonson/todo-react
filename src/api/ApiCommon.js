@@ -9,6 +9,7 @@ export async function makeRequest(path, method, token, requestData, setApiInProg
                 'Authorization': 'Bearer ' + token,
             },
             body: requestData ? JSON.stringify(requestData) : null,
+            keepalive: true,
         });
 
         await processResponse(response, (success, responseData, userError) => {
@@ -61,8 +62,8 @@ async function processResponse(response, callback) {
 }
 
 function getHostUrl() {
-    //let location = window.location;
-    //return location.protocol + '//' + location.hostname;
-    return "http://localhost/api/v1"
+    let location = window.location;
+    return location.protocol + '//' + location.hostname + '/api/v1';
+    //return "http://localhost/api/v1"
 }
 
