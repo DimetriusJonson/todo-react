@@ -56,7 +56,7 @@ function Navbar() {
                             {isLoggedIn ? (
                                 <div className="navbar-item"><Link className="button is-warning is-light is-rounded" to='/logout' onClick={onLogout} disabled={apiInProgress}>{'Выйти ' + user.name}</Link></div>
                             ) : (<>
-                                <div className="navbar-item px-0"><Link className="button is-warning is-soft is-rounded" to='/createUser'>Создать пользователя</Link></div>
+                                <div className="navbar-item pr-0"><Link className="button is-warning is-soft is-rounded" to='/createUser'>Создать пользователя</Link></div>
                                 <div className="navbar-item pl-0"><Link className="button is-light is-rounded" to='/login'>Войти</Link></div>
                             </>
                             )}
