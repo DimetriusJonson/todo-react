@@ -5,6 +5,11 @@ const MIN_COMPLETED_AT = '-262143-01-01T00:00:00Z';
 export async function apiTasks(token, setApiInProgress, callback) {
     makeRequest('/tasks', 'GET', token, null, setApiInProgress, (success, responseData, userError) => {
         if (success) {
+            responseData.data.forEach(task => {
+                if (task.completed_at === MIN_COMPLETED_AT) {
+                    task.completed_at = null;
+                }
+            });
             callback(true, responseData.data);
         } else {
             callback(false, responseData, userError);
