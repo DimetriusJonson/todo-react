@@ -63,7 +63,6 @@ async function processResponse(response, callback) {
 
 function getHostUrl() {
     let location = window.location;
-    return location.protocol + '//' + location.hostname + '/api/v1';
-    //return "http://localhost/api/v1"
+    return location.protocol + '//' + location.hostname + ':' + location.port + '/api/v1';
 }
 
