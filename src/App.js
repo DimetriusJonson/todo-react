@@ -9,7 +9,7 @@ import MessageBanner from "./composite/MessageBanner";
 
 function App() {
   return (
-    <section className="section">
+    <section className="section p-0">
       <div className="is-paddingless">
         <BrowserRouter>
           <Navbar />

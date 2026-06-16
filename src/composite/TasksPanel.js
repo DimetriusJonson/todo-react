@@ -40,14 +40,22 @@ function TasksPanel() {
   }, [user, dispatch, navigate]);
 
   let completedOnChange = async (info) => {
+    info.target.checked = !info.target.checked;
     setApiInProgress(true);
     try {
       let patch = { id: parseInt(info.name.substring(info.name.indexOf('_') + 1)), completed_at: info.value ? new Date().toISOString() : null };
 
       await apiSaveTask(patch, user.token, setApiInProgress, (success, taskOrError) => {
         if (success) {
-          info.target.checked = taskOrError.completed_at;
-          tasks.filter(t => t.id === taskOrError.id).forEach(t => t.completed_at = taskOrError.completed_at);
+          
+          setTasks(prevTask => 
+            prevTask.map(task => 
+              task.id === taskOrError.id 
+                ? { ...task, completed_at: taskOrError.completed_at } 
+                : task
+            )
+          );
+
           showInfo(dispatch, 'Задача сохранена.');
         } else {
           showError(dispatch, taskOrError);
@@ -57,6 +65,8 @@ function TasksPanel() {
       setApiInProgress(false);
     }
   }
+
+  const filteredTasks = tasks.filter(t => filterTask(t, filter));
 
   tasks.sort((task1, task2) => sortTask(task1, task2, sortKind));
 
@@ -72,8 +82,8 @@ function TasksPanel() {
           </tr>
         </thead>
         <tbody>
-          {tasks.length > 0 ? (
-            tasks.filter(t => filterTask(t, filter)).map((task) => (
+          {filteredTasks.length > 0 ? (
+            filteredTasks.map((task) => (
               <tr key={task.id}>
                 <td className={priorityStyle(task)}>{taskPriorityName(task)}</td>
                 <td>

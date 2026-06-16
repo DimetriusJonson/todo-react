@@ -31,23 +31,17 @@ function Home() {
     ];
 
     return (
-        <section className="section is-paddingless">
-            <div className="container">
-                <nav className="level">
-                    <div className="level-left">
-                        <div className="level-item">
-                            <SelectInput name="filterSelect" notSelectedText="Фильтр" value={filter} options={filterOptions} onChange={filterOnChange} />
-                            <SelectInput className="ml-3" name="sortSelect" notSelectedText="Сортировка" value={sortKind} options={sortOptions} onChange={sortOnChange} />
-                        </div>
-                    </div>
-                    <div className="level-right">
-                        <Button className="level-item is-light" id="create_button" label="Создать" onClick={() => navigate('/task/create')} />
-                    </div>
-                </nav>
-
-                <TasksPanel />
+        <div className="container is-size-7-mobile pt-5">
+            <div className="buttons is-justify-content-space-between px-2 pb-5">
+                <span>
+                    <SelectInput className="is-size-7-mobile" name="filterSelect" notSelectedText="Фильтр" value={filter} options={filterOptions} onChange={filterOnChange} />
+                    <SelectInput className="is-size-7-mobile pl-2" name="sortSelect" notSelectedText="Сортировка" value={sortKind} options={sortOptions} onChange={sortOnChange} />
+                </span>
+                <Button className="level-item is-light is-size-7-mobile" id="create_button" label="Создать" onClick={() => navigate('/task/create')} />
             </div>
-        </section>
+
+            <TasksPanel />
+        </div>
     );
 }
 

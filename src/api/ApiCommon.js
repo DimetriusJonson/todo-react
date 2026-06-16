@@ -64,5 +64,6 @@ async function processResponse(response, callback) {
 function getHostUrl() {
     let location = window.location;
     return location.protocol + '//' + location.hostname + ':' + location.port + '/api/v1';
+    //return 'http://localhost:3000/api/v1';
 }
 
