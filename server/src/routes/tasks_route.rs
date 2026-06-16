@@ -1,6 +1,6 @@
 use crate::database::tasks::{self, Entity as Tasks};
 use crate::database::users::{self};
-use crate::dto::task_dto::{self, TaskDto};
+use crate::dto::task_dto::TaskDto;
 use crate::util::app_error::{AppError, AppResult};
 use crate::util::app_json::ValidJson;
 use axum::extract::{Path, State};
@@ -9,9 +9,8 @@ use chrono::{DateTime, FixedOffset, Utc};
 use sea_orm::ActiveValue::Set;
 use sea_orm::{ActiveModelTrait, ColumnTrait, IntoActiveModel, QueryFilter, TryIntoModel};
 use sea_orm::{DatabaseConnection, EntityTrait};
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use tracing::error;
-use validator::Validate;
 
 #[derive(Serialize)]
 pub struct TasksResponse {
@@ -55,7 +54,7 @@ pub async fn task(
 pub async fn create_task(
     State(db_conn): State<DatabaseConnection>,
     Extension(user): Extension<users::Model>,
-    ValidJson(task): ValidJson<CreateTaskParams>,
+    ValidJson(task): ValidJson<TaskDto>,
 ) -> AppResult<Json<TaskDto>> {
     let saved_task = tasks::ActiveModel {
         priority: Set(task.priority),
@@ -173,12 +172,3 @@ fn build_task(task: tasks::Model) -> AppResult<TaskDto> {
     })
 }
 
-#[derive(Serialize, Deserialize, Default, Validate, Debug)]
-pub struct CreateTaskParams {
-    pub priority: Option<String>,
-    #[validate(required, regex(path = task_dto::title_regex(), message="Разрешены только буквы и цифры и не менее 3-х символов."))]
-    pub title: Option<String>,
-    pub completed_at: Option<DateTime<FixedOffset>>,
-    pub description: Option<String>,
-    pub is_default: Option<bool>,
-}

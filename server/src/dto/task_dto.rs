@@ -8,6 +8,7 @@ use validator::Validate;
 #[derive(Serialize, Deserialize, Default, Validate, Debug)]
 pub struct TaskDto {
     pub id: Option<i32>,
+    #[validate(required, length(min = 1, code = "required"))]
     pub priority: Option<String>,
     #[validate(regex(path = title_regex(), message="Разрешены только буквы и цифры и не менее 3-х символов."))]
     pub title: Option<String>,

@@ -109,7 +109,7 @@ function TaskEdit({ mainTitle }) {
                         <div className="level">
                             <div className="level-left">
                                 <div className="level-item">
-                                    <SelectWithLabel name="priority" label={"Приоритет:"} value={priority} options={priorities} onChange={(v) => setPriority(v)} />
+                                    <SelectWithLabel name="priority" label={"Приоритет:"} value={priority} error={errors.get("priority")} options={priorities} onChange={(v) => setPriority(v)} />
                                 </div>
                             </div>
 
