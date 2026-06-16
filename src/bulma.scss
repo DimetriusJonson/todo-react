@@ -1,0 +1,22 @@
+@use "bulma/sass/utilities" with (
+  $primary: hsl(39deg 90% 52%),
+  $success: hsl(174deg, 70%, 64%),
+  $danger:hsl(357deg 77% 70%),
+  $link: hsl(233deg 100% 73%),
+  $warning: hsl(42deg 78% 53%)
+);
+
+@forward "bulma/sass/base";
+@forward "bulma/sass/helpers";
+@forward "bulma/sass/layout";
+@forward "bulma/sass/form";
+@forward "bulma/sass/themes";
+@forward "bulma/sass/components/navbar";
+@forward "bulma/sass/components/message";
+@forward "bulma/sass/elements/button";
+@forward "bulma/sass/elements/box";
+@forward "bulma/sass/elements/content";
+@forward "bulma/sass/elements/table";
+@forward "bulma/sass/elements/title";
+@forward "bulma/sass/elements/tag";
+@forward "bulma/sass/elements/delete";

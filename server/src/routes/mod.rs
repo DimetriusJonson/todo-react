@@ -5,7 +5,7 @@ use axum::{
     routing::{delete, get, get_service, patch, post},
 };
 use sea_orm::DatabaseConnection;
-use tower_http::{cors::CorsLayer, services::{ServeDir, ServeFile}, trace::TraceLayer};
+use tower_http::{compression::CompressionLayer, cors::CorsLayer, services::{ServeDir, ServeFile}, trace::TraceLayer};
 
 use crate::routes::check_middleware::{check_auth_token, check_json_accept};
 
@@ -49,6 +49,7 @@ pub async fn create_routes(db_conn: DatabaseConnection, client_dir: &str) -> Rou
                 .layer(CorsLayer::permissive()),
         )
         .fallback_service(fallback_serve_dir)
+        .layer(CompressionLayer::new().gzip(true))
         .layer(TraceLayer::new_for_http())
         .with_state(app_state)
 }

@@ -31,11 +31,12 @@ RUN upx --best --lzma /server
 FROM node:20-alpine AS builder-client
 WORKDIR /root
 
+COPY package.json ./
+
 RUN npm install
 
 COPY src/ ./src
 COPY public/ ./public
-COPY package.json ./
 
 RUN npm run build
 
